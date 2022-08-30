@@ -13,6 +13,10 @@
             <div class="container px-4 py-5">
                 <h1 class="pb-2 border-bottom">Lista Transportistas</h1>
                 <a class="btn btn-primary mt-4 mb-4" th:href="@{'/shipper/new'}">Nuevo Transportista</a>
+                <form method="post" th:action="@{/shipper/BuscarTransportistas}">
+                    <input name="searchField" class="form-control mb-3" type="text" placeholder="Search"
+                           aria-label="Search" th:value="${searchField}">
+                </form>
                 <table class="table table-sm">
                     <tr>
                         <th>#</th>
@@ -20,12 +24,21 @@
                         <th>Teléfono</th>
                         <th></th>
                         <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <tr th:each="shipper, info : ${shipperList}">
                         <td th:text="${info.index + 1}"></td>
                         <td th:text="${shipper.companyname}"></td>
                         <td th:text="${shipper.phone}"></td>
-                        <td><a class="btn btn-primary" th:href="@{'/shipper/edit' + '?id=' + ${shipper.shipperId}}">Editar</a>
+                        <td><a class="btn btn-primary" th:href="@{'/shipper/edit' + '?id=' + ${shipper.shipperId}}">
+                            Editar</a>
+                        </td>
+                        <td><a class="btn btn-primary" th:href="@{'/shipper/editF1' + '?id=' + ${shipper.shipperId}}">
+                            Editar Par F1</a>
+                        </td>
+                        <td><a class="btn btn-primary" th:href="@{'/shipper/editF2' + '?id=' + ${shipper.shipperId}}">
+                            Editar Par F2</a>
                         </td>
                         <td><a class="btn btn-danger" th:href="@{'/shipper/delete' + '?id=' + ${shipper.shipperId}}">Borrar</a>
                         </td>

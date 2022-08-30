@@ -55,6 +55,60 @@ public class ShipperController {
         }
     }
 
+    @GetMapping("/editF1")
+    public String editarTransportistaF1(Model model,
+                                        @RequestParam("id") int id) {
+
+        Optional<Shipper> optShipper = shipperRepository.findById(id);
+
+        if (optShipper.isPresent()) {
+            Shipper shipper = optShipper.get();
+            model.addAttribute("shipper", shipper);
+            return "shipper/editFrmF1";
+        } else {
+            return "redirect:/shipper/list";
+        }
+    }
+
+    @PostMapping("/saveF1")
+    public String actualizarNuevoTransportistaF1(Shipper shipper) {
+
+        Optional<Shipper> opt = shipperRepository.findById(shipper.getShipperId());
+
+        if (opt.isPresent()) {
+            Shipper shipperOriginal = opt.get();
+            shipperOriginal.setCompanyname(shipper.getCompanyname());
+            shipperRepository.save(shipperOriginal);
+        }
+        return "redirect:/shipper/list";
+    }
+
+    @GetMapping("/editF2")
+    public String editarTransportistaF2(Model model,
+                                        @RequestParam("id") int id) {
+
+        Optional<Shipper> optShipper = shipperRepository.findById(id);
+
+        if (optShipper.isPresent()) {
+            Shipper shipper = optShipper.get();
+            model.addAttribute("shipper", shipper);
+            return "shipper/editFrmF2";
+        } else {
+            return "redirect:/shipper/list";
+        }
+    }
+
+    @PostMapping("/saveF2")
+    public String actualizarNuevoTransportistaF2(Shipper shipper) {
+
+        Optional<Shipper> opt = shipperRepository.findById(shipper.getShipperId());
+
+        if (opt.isPresent()) {
+            shipperRepository.actualizarTelefonoShipper(shipper.getPhone(), shipper.getShipperId());
+        }
+        return "redirect:/shipper/list";
+    }
+
     @GetMapping("/delete")
     public String borrarTransportista(Model model,
                                       @RequestParam("id") int id) {
@@ -66,6 +120,18 @@ public class ShipperController {
         }
         return "redirect:/shipper/list";
 
+    }
+
+    @PostMapping("/BuscarTransportistas")
+    public String buscarTransportista(@RequestParam("searchField") String searchField,
+                                      Model model) {
+
+        //List<Shipper> lista = shipperRepository.findByCompanyName(searchField);
+        List<Shipper> lista = shipperRepository.buscarPorNombreParcial(searchField);
+        model.addAttribute("shipperList", lista);
+        model.addAttribute("searchField", searchField);
+
+        return "shipper/list";
     }
 
 
